@@ -12,16 +12,15 @@
 //------------------------------------------------------------------------------
 LinkedList::LinkedList() {
 	head = nullptr;
+
+	// set Position pointer to list head
 	gotoHead();
 }
 
 //------------------------------------------------------------------------------
-// reset Position to list head
+// destructor
 //------------------------------------------------------------------------------
-void LinkedList::gotoHead() {
-	Position = head;
-	prevPosition = nullptr;
-}
+LinkedList::~LinkedList() { makeEmpty(); }
 
 //------------------------------------------------------------------------------
 // new item becomes list head
@@ -58,13 +57,13 @@ bool LinkedList::deleteNode(int matchData) {
 
 	// data at list end
 	if (pNode->next == nullptr) {
-		prevPosition->next = nullptr;
-		Position = prevPosition;
+		_prevPosition->next = nullptr;
+		Position = _prevPosition;
 	}
 	// nodes before and after data
-	else if (prevPosition != nullptr) {
-		prevPosition->next = pNode->next;
-		Position = prevPosition->next;
+	else if (_prevPosition != nullptr) {
+		_prevPosition->next = pNode->next;
+		Position = _prevPosition->next;
 	}
 	// data at list head
 	else {
@@ -76,6 +75,46 @@ bool LinkedList::deleteNode(int matchData) {
 	delete pNode;
 
 	return true;
+}
+
+//------------------------------------------------------------------------------
+// reset Position to list head
+//------------------------------------------------------------------------------
+void LinkedList::gotoHead() {
+	Position = head;
+	_prevPosition = nullptr;
+}
+
+//------------------------------------------------------------------------------
+// advances Position pointer to the next node on the list, if possible
+// 
+// returns 
+//		- new Position, when Position did in fact advance
+//		- nullptr, when Position is at list end and cannot advance
+//------------------------------------------------------------------------------
+Node* LinkedList::gotoNext() {
+
+	if (Position != nullptr) {
+
+		Position = Position->next;
+		return Position;
+	}
+
+	// there is no next: Position points to 0, we are at end of list
+	return nullptr;
+}
+
+//------------------------------------------------------------------------------
+// return the list item pointed to by Position in reference param
+//------------------------------------------------------------------------------
+bool LinkedList::getCurrentNodeData(int& fillWithData) {
+	
+	if (Position != nullptr) {
+		fillWithData = Position->data;
+		return true;
+	}
+	
+	return false;
 }
 
 //------------------------------------------------------------------------------
@@ -94,25 +133,12 @@ Node* LinkedList::getDataPosition(int matchData) {
 		}
 
 		// keep previous position for easy deleteNode
-		prevPosition = Position;
+		_prevPosition = Position;
 
 		// advance Position to next node on the list
 		gotoNext();
 	}
 	return Position;
-}
-
-//------------------------------------------------------------------------------
-// return the list item pointed to by Position in reference param
-//------------------------------------------------------------------------------
-bool LinkedList::getCurrentNodeData(int& fillWithData) {
-	
-	if (Position != nullptr) {
-		fillWithData = Position->data;
-		return true;
-	}
-	
-	return false;
 }
 
 //------------------------------------------------------------------------------
@@ -152,27 +178,3 @@ void LinkedList::makeEmpty() {
 	head = nullptr;
 	Position = nullptr;
 }
-
-//------------------------------------------------------------------------------
-// advances Position pointer to the next node on the list, if possible
-// 
-// returns 
-//		- new Position, when Position did in fact advance
-//		- nullptr, when Position is at list end and cannot advance
-//------------------------------------------------------------------------------
-Node* LinkedList::gotoNext() {
-
-	if (Position != nullptr) {
-
-		Position = Position->next;
-		return Position;
-	}
-
-	// there is no next: Position points to 0, we are at end of list
-	return nullptr;
-}
-
-//------------------------------------------------------------------------------
-// destructor
-//------------------------------------------------------------------------------
-LinkedList::~LinkedList() { makeEmpty(); }

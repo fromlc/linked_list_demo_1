@@ -28,24 +28,25 @@ class LinkedList {
 private:
 	Node* head;
 	Node* Position;
-	Node* prevPosition;
+	Node* _prevPosition;	// internal use: simplifies node delete
 
 public:
 	LinkedList();
+	~LinkedList();
 
+	// manage nodes
 	void addNode(int data);							// add new node at head of list
-	bool deleteNode(int matchData);
 	void insertNode(int data);
+	bool deleteNode(int matchData);
 
+	// manage Position pointer to current node
+	void gotoHead();
+	Node* gotoNext();
 	bool getCurrentNodeData(int& fillWithData);		// return data at current Position
 	Node* getDataPosition(int matchData);
 
-	void gotoHead();
-	Node* gotoNext();
-
+	// manage list 
 	bool isEmpty();
-	void makeEmpty();
-
-	~LinkedList();
+	void makeEmpty();	// release each Node's memory
 };
 #endif
