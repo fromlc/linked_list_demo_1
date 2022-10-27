@@ -33,10 +33,10 @@ private:
 public:
 	LinkedList();
 
-	void addItem(int);		//place new node at begining of list
-	bool deleteItem(int);
-	void insertItem(int);
-	int viewItem();			//return current position item
+	void addNode(int);				// add new node at head of list
+	bool deleteNode(int);
+	void insertNode(int);
+	int getCurrentNodeData();		// return current Position item
 
 	Node* getDataPosition(int data);
 	void gotoHead();

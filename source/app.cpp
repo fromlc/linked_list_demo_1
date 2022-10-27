@@ -14,17 +14,19 @@ int main() {
 
 	// add some list items, each one becomes the new list head
 
-	myList.addItem(1);
-	myList.addItem(2);
-	myList.addItem(3);
-	myList.addItem(4);
-	myList.addItem(5);
+	myList.addNode(1);
+	myList.addNode(2);
+	myList.addNode(3);
+	myList.addNode(4);
+	myList.addNode(5);
 
 	bool deleted;
 	
-	deleted = myList.deleteItem(3);
+	deleted = myList.deleteNode(3);
 
-	deleted = myList.deleteItem(1);
+	deleted = myList.deleteNode(1);
+
+	deleted = myList.deleteNode(5);
 
 	// display each list item
 
@@ -47,7 +49,7 @@ int main() {
 	myList.gotoHead();
 
 	do {
-		std::cout << myList.viewItem() << '\n';
+		std::cout << myList.getCurrentNodeData() << '\n';
 	} while (myList.gotoNext());
 	//-----------------------------------------------------------------------------
 	// iterate() advances the Position pointer to the next list item

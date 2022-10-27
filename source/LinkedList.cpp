@@ -27,7 +27,7 @@ void LinkedList::gotoHead() {
 //------------------------------------------------------------------------------
 // new item becomes list head
 //------------------------------------------------------------------------------
-void LinkedList::addItem(int data) {
+void LinkedList::addNode(int data) {
 	Node* temp = new Node(data);
 
 	temp->next = head;
@@ -43,12 +43,12 @@ void LinkedList::addItem(int data) {
 // 
 // #TODO
 //------------------------------------------------------------------------------
-void LinkedList::insertItem(int data) {}
+void LinkedList::insertNode(int data) {}
 
 //------------------------------------------------------------------------------
 // delete list node containing passed data value
 //------------------------------------------------------------------------------
-bool LinkedList::deleteItem(int data) {
+bool LinkedList::deleteNode(int data) {
 
 	Node* temp = getDataPosition(data);
 
@@ -59,13 +59,20 @@ bool LinkedList::deleteItem(int data) {
 	// data at list end
 	if (temp->next == nullptr) {
 		prevPosition->next = nullptr;
+		Position = prevPosition;
 	}
 	// nodes before and after data
-	else {
+	else if (prevPosition != nullptr) {
 		prevPosition->next = temp->next;
+		Position = prevPosition->next;
 	}
-	Position = prevPosition;
+	// data at list head
+	else {
+		head = temp->next;
+		gotoHead();
+	}
 
+	// release node memory
 	delete temp;
 
 	return true;
@@ -86,7 +93,7 @@ Node* LinkedList::getDataPosition(int data) {
 			break;
 		}
 
-		// keep previous position for easy deleteItem
+		// keep previous position for easy deleteNode
 		prevPosition = Position;
 
 		// advance Position to next node on the list
@@ -98,7 +105,7 @@ Node* LinkedList::getDataPosition(int data) {
 //------------------------------------------------------------------------------
 // view the list item pointed to by Position
 //------------------------------------------------------------------------------
-int LinkedList::viewItem() {
+int LinkedList::getCurrentNodeData() {
 
 	if (Position != nullptr)
 		return Position->data;
