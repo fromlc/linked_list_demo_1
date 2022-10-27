@@ -11,7 +11,6 @@
 // constructor
 //------------------------------------------------------------------------------
 LinkedList::LinkedList() {
-
 	head = nullptr;
 	gotoHead();
 }
@@ -28,12 +27,13 @@ void LinkedList::gotoHead() {
 // new item becomes list head
 //------------------------------------------------------------------------------
 void LinkedList::addNode(int data) {
+
 	Node* pNode = new Node(data);
 
 	pNode->next = head;
 	head = pNode;
 
-	// before first item Position will be nullptr
+	// before first item is added Position is nullptr
 	if (Position == nullptr)
 		gotoHead();
 }
@@ -48,9 +48,9 @@ void LinkedList::insertNode(int data) {}
 //------------------------------------------------------------------------------
 // delete list node containing passed data value
 //------------------------------------------------------------------------------
-bool LinkedList::deleteNode(int data) {
+bool LinkedList::deleteNode(int matchData) {
 
-	Node* pNode = getDataPosition(data);
+	Node* pNode = getDataPosition(matchData);
 
 	// data not found
 	if (pNode == nullptr)
@@ -81,14 +81,14 @@ bool LinkedList::deleteNode(int data) {
 //------------------------------------------------------------------------------
 // returns Position pointer to node containing passed data value
 //------------------------------------------------------------------------------
-Node* LinkedList::getDataPosition(int data) {
+Node* LinkedList::getDataPosition(int matchData) {
 
 	gotoHead();
-	bool found = false;
 
+	bool found = false;
 	while (Position != nullptr && !found) {
 
-		if (Position->data == data) {
+		if (Position->data == matchData) {
 			found = true;
 			break;
 		}
@@ -103,15 +103,16 @@ Node* LinkedList::getDataPosition(int data) {
 }
 
 //------------------------------------------------------------------------------
-// view the list item pointed to by Position
+// return the list item pointed to by Position in reference param
 //------------------------------------------------------------------------------
-int LinkedList::getCurrentNodeData() {
-
-	if (Position != nullptr)
-		return Position->data;
-
-	//std::cerr << "Position is nullptr\n";
-	return 0;
+bool LinkedList::getCurrentNodeData(int& fillWithData) {
+	
+	if (Position != nullptr) {
+		fillWithData = Position->data;
+		return true;
+	}
+	
+	return false;
 }
 
 //------------------------------------------------------------------------------
