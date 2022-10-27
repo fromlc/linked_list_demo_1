@@ -36,7 +36,7 @@ public:
 
 	// manage nodes
 	void addNode(int data);				// add new node at head of list
-	void insertNode(int data);
+	void insertNode(int data);			// #TODO implement for sorted list
 	bool deleteNode(int matchData);
 
 	// manage Position pointer to current node

@@ -35,7 +35,9 @@ int main() {
 	// show initial list data
 	displayNodeData(myList);
 
-	// check all three cases deleteNode() must handle:
+	// check all four cases deleteNode() must handle
+	// for thorough list test check all four
+	// several times in different orders
 	
 	// delete node in the middle of the list
 	deleted = myList.deleteNode(3);
@@ -44,7 +46,7 @@ int main() {
 	// delete node at list head
 	deleted = myList.deleteNode(5);
 	// delete node that isn't in the list
-	deleted = myList.deleteNode(6);
+	deleted = myList.deleteNode(100);
 
 	// show remaining list data
 	displayNodeData(myList);
