@@ -1,5 +1,9 @@
 //------------------------------------------------------------------------------
 // LinkedList.cpp : class definition
+// 
+// Author: unknown book example, unknown author
+// 
+// This code is intended as an example for students in my classes.
 //------------------------------------------------------------------------------
 #include "LinkedList.h"
 
@@ -16,21 +20,21 @@ LinkedList::LinkedList() {
 // add item, new item becomes list head
 //------------------------------------------------------------------------------
 void LinkedList::putItem(int input) {
-  	Node *temp = new Node(input);
+	Node* temp = new Node(input);
 
 	temp->next = head;
 	head = temp;
 
 	if (Position == nullptr)
-		restart();
+		gotoHead();
 }
 
 //------------------------------------------------------------------------------
 // delete list node containing passed input value
 //------------------------------------------------------------------------------
-void LinkedList::DeleteItem(int input) {
-	Node *temp = getlocation(input);
-	
+void LinkedList::deleteItem(int input) {
+	Node* temp = getPosition(input);
+
 	temp->data = temp->next->data;
 	Position = temp;
 	temp = temp->next;
@@ -42,11 +46,11 @@ void LinkedList::DeleteItem(int input) {
 //------------------------------------------------------------------------------
 // view the list item pointed to by Position
 //------------------------------------------------------------------------------
-int LinkedList::ViewItem() {
-	if(Position!=nullptr)
+int LinkedList::viewItem() {
+	if (Position != nullptr)
 		return Position->data;
 
-	std::cerr << "Position is nullptr" << std::endl;
+	//std::cerr << "Position is nullptr\n";
 	return 0;
 }
 
@@ -61,64 +65,80 @@ bool LinkedList::isEmpty() {
 }
 
 //------------------------------------------------------------------------------
-// returns pointer to node containing passed input value
+// returns Position pointer to node containing passed input value
 //------------------------------------------------------------------------------
-Node* LinkedList::getlocation(int input) {
-	restart();
+Node* LinkedList::getPosition(int input) {
+	gotoHead();
 	bool found = false;
 
-	while (Position != nullptr && found == false)
+	while (Position != nullptr && !found)
 	{
 		if (Position->data != input)
 			found = true;
 
-		iterate();
+		gotoNext();
 	}
-
 	return Position;
 }
 
 //------------------------------------------------------------------------------
 // reset Position to list head
 //------------------------------------------------------------------------------
-void LinkedList::restart() {
+void LinkedList::gotoHead() {
 	Position = head;
 }
 
 //------------------------------------------------------------------------------
-// LinkedList.h class declaration and definition
+// 
 //------------------------------------------------------------------------------
-void LinkedList::MakeEmpty() {
+void LinkedList::makeEmpty() {
 
-	if (!isEmpty()) {
-		Node* temp = head;
-		restart();
-		bool endOfList = true;
+	if (isEmpty())
+		return;
 
-		while (endOfList) {
-			temp = Position;
-			endOfList = iterate();
-			delete temp;
-		} 
+	Node* temp = head;
+	gotoHead();
 
-		head = nullptr;
-	}
+	Node* currentItem = nullptr;
 
+	do {
+		// save each Position value
+		temp = Position;
+
+		// then gotoNext() advances Position to next node on the list
+		currentItem = gotoNext();
+
+		// now our Position is the next node, we can
+		// delete previous Position's memory
+		// the memory deleted is every Node instance
+		delete temp;
+
+	} while (currentItem != nullptr);
+
+	head = nullptr;
+	Position = nullptr;
 }
 
 //------------------------------------------------------------------------------
-// advance Position pointer one node
+// advances Position pointer to the next node on the list, if possible
+// 
+// returns 
+//		- new Position, when Position did in fact advance
+//		- nullptr, when Position is at list end and cannot advance
 //------------------------------------------------------------------------------
-bool LinkedList::iterate() {
+Node* LinkedList::gotoNext() {
+
 	if (Position != nullptr) {
+
 		Position = Position->next;
-		return true;
+		return Position;
 	}
-	//means I could not iterate
-	return false;
+
+	// there is no next: Position points to 0, we are at end of list
+	return nullptr;
 }
 
 //------------------------------------------------------------------------------
 // destructor
 //------------------------------------------------------------------------------
-LinkedList::~LinkedList() { MakeEmpty(); }
+LinkedList::~LinkedList() { makeEmpty(); }
