@@ -47,6 +47,7 @@ void LinkedList::deleteItem(int input) {
 // view the list item pointed to by Position
 //------------------------------------------------------------------------------
 int LinkedList::viewItem() {
+
 	if (Position != nullptr)
 		return Position->data;
 
@@ -58,16 +59,15 @@ int LinkedList::viewItem() {
 // returns true if list is empty, false otherwise
 //------------------------------------------------------------------------------
 bool LinkedList::isEmpty() {
-	if (head == nullptr)
-		return true;
 
-	return false;
+	return (head == nullptr) ? true : false;
 }
 
 //------------------------------------------------------------------------------
 // returns Position pointer to node containing passed input value
 //------------------------------------------------------------------------------
 Node* LinkedList::getPosition(int input) {
+
 	gotoHead();
 	bool found = false;
 
@@ -84,9 +84,7 @@ Node* LinkedList::getPosition(int input) {
 //------------------------------------------------------------------------------
 // reset Position to list head
 //------------------------------------------------------------------------------
-void LinkedList::gotoHead() {
-	Position = head;
-}
+void LinkedList::gotoHead() { Position = head; }
 
 //------------------------------------------------------------------------------
 // 
@@ -96,14 +94,13 @@ void LinkedList::makeEmpty() {
 	if (isEmpty())
 		return;
 
-	Node* temp = head;
 	gotoHead();
-
+	// if there is a non-zero currentItem, list end has not been reached
 	Node* currentItem = nullptr;
 
 	do {
 		// save each Position value
-		temp = Position;
+		Node* temp = Position;
 
 		// then gotoNext() advances Position to next node on the list
 		currentItem = gotoNext();
