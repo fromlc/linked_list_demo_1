@@ -13,34 +13,86 @@
 LinkedList::LinkedList() {
 
 	head = nullptr;
-	Position = head;
+	gotoHead();
 }
 
 //------------------------------------------------------------------------------
-// add item, new item becomes list head
+// reset Position to list head
 //------------------------------------------------------------------------------
-void LinkedList::putItem(int input) {
-	Node* temp = new Node(input);
+void LinkedList::gotoHead() {
+	Position = head;
+	prevPosition = nullptr;
+}
+
+//------------------------------------------------------------------------------
+// new item becomes list head
+//------------------------------------------------------------------------------
+void LinkedList::addItem(int data) {
+	Node* temp = new Node(data);
 
 	temp->next = head;
 	head = temp;
 
+	// before first item Position will be nullptr
 	if (Position == nullptr)
 		gotoHead();
 }
 
 //------------------------------------------------------------------------------
-// delete list node containing passed input value
+// insert list node containing passed data value
+// 
+// #TODO
 //------------------------------------------------------------------------------
-void LinkedList::deleteItem(int input) {
-	Node* temp = getPosition(input);
+void LinkedList::insertItem(int data) {}
 
-	temp->data = temp->next->data;
-	Position = temp;
-	temp = temp->next;
-	Position->next = temp->next;
+//------------------------------------------------------------------------------
+// delete list node containing passed data value
+//------------------------------------------------------------------------------
+bool LinkedList::deleteItem(int data) {
+
+	Node* temp = getDataPosition(data);
+
+	// data not found
+	if (temp == nullptr)
+		return false;
+
+	// data at list end
+	if (temp->next == nullptr) {
+		prevPosition->next = nullptr;
+	}
+	// nodes before and after data
+	else {
+		prevPosition->next = temp->next;
+	}
+	Position = prevPosition;
 
 	delete temp;
+
+	return true;
+}
+
+//------------------------------------------------------------------------------
+// returns Position pointer to node containing passed data value
+//------------------------------------------------------------------------------
+Node* LinkedList::getDataPosition(int data) {
+
+	gotoHead();
+	bool found = false;
+
+	while (Position != nullptr && !found) {
+
+		if (Position->data == data) {
+			found = true;
+			break;
+		}
+
+		// keep previous position for easy deleteItem
+		prevPosition = Position;
+
+		// advance Position to next node on the list
+		gotoNext();
+	}
+	return Position;
 }
 
 //------------------------------------------------------------------------------
@@ -62,29 +114,6 @@ bool LinkedList::isEmpty() {
 
 	return (head == nullptr) ? true : false;
 }
-
-//------------------------------------------------------------------------------
-// returns Position pointer to node containing passed input value
-//------------------------------------------------------------------------------
-Node* LinkedList::getPosition(int input) {
-
-	gotoHead();
-	bool found = false;
-
-	while (Position != nullptr && !found)
-	{
-		if (Position->data != input)
-			found = true;
-
-		gotoNext();
-	}
-	return Position;
-}
-
-//------------------------------------------------------------------------------
-// reset Position to list head
-//------------------------------------------------------------------------------
-void LinkedList::gotoHead() { Position = head; }
 
 //------------------------------------------------------------------------------
 // 

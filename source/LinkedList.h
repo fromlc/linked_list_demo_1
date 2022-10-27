@@ -28,19 +28,21 @@ class LinkedList {
 private:
 	Node* head;
 	Node* Position;
+	Node* prevPosition;
 
 public:
 	LinkedList();
 
-	void putItem(int);		//place new node at begining of list
-	void deleteItem(int);
+	void addItem(int);		//place new node at begining of list
+	bool deleteItem(int);
+	void insertItem(int);
 	int viewItem();			//return current position item
 
-	bool isEmpty();
-	Node* getPosition(int);
+	Node* getDataPosition(int data);
 	void gotoHead();
-	void insertItem(int);
 	Node* gotoNext();
+
+	bool isEmpty();
 	void makeEmpty();
 
 	~LinkedList();

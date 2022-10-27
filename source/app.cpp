@@ -14,11 +14,17 @@ int main() {
 
 	// add some list items, each one becomes the new list head
 
-	myList.putItem(1);
-	myList.putItem(2);
-	myList.putItem(3);
-	myList.putItem(4);
-	myList.putItem(5);
+	myList.addItem(1);
+	myList.addItem(2);
+	myList.addItem(3);
+	myList.addItem(4);
+	myList.addItem(5);
+
+	bool deleted;
+	
+	deleted = myList.deleteItem(3);
+
+	deleted = myList.deleteItem(1);
 
 	// display each list item
 
