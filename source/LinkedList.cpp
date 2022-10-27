@@ -28,10 +28,10 @@ void LinkedList::gotoHead() {
 // new item becomes list head
 //------------------------------------------------------------------------------
 void LinkedList::addNode(int data) {
-	Node* temp = new Node(data);
+	Node* pNode = new Node(data);
 
-	temp->next = head;
-	head = temp;
+	pNode->next = head;
+	head = pNode;
 
 	// before first item Position will be nullptr
 	if (Position == nullptr)
@@ -50,30 +50,30 @@ void LinkedList::insertNode(int data) {}
 //------------------------------------------------------------------------------
 bool LinkedList::deleteNode(int data) {
 
-	Node* temp = getDataPosition(data);
+	Node* pNode = getDataPosition(data);
 
 	// data not found
-	if (temp == nullptr)
+	if (pNode == nullptr)
 		return false;
 
 	// data at list end
-	if (temp->next == nullptr) {
+	if (pNode->next == nullptr) {
 		prevPosition->next = nullptr;
 		Position = prevPosition;
 	}
 	// nodes before and after data
 	else if (prevPosition != nullptr) {
-		prevPosition->next = temp->next;
+		prevPosition->next = pNode->next;
 		Position = prevPosition->next;
 	}
 	// data at list head
 	else {
-		head = temp->next;
+		head = pNode->next;
 		gotoHead();
 	}
 
 	// release node memory
-	delete temp;
+	delete pNode;
 
 	return true;
 }
@@ -136,7 +136,7 @@ void LinkedList::makeEmpty() {
 
 	do {
 		// save each Position value
-		Node* temp = Position;
+		Node* pNode = Position;
 
 		// then gotoNext() advances Position to next node on the list
 		currentItem = gotoNext();
@@ -144,7 +144,7 @@ void LinkedList::makeEmpty() {
 		// now our Position is the next node, we can
 		// delete previous Position's memory
 		// the memory deleted is every Node instance
-		delete temp;
+		delete pNode;
 
 	} while (currentItem != nullptr);
 
