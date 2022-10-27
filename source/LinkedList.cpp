@@ -49,11 +49,14 @@ void LinkedList::insertNode(int data) {}
 //------------------------------------------------------------------------------
 bool LinkedList::deleteNode(int matchData) {
 
-	Node* pNode = getDataPosition(matchData);
+	_setPosition(matchData);
 
 	// data not found
-	if (pNode == nullptr)
+	if (Position == nullptr)
 		return false;
+
+	// data found, Position points to the containing node
+	Node* pNode = Position;
 
 	// data at list end
 	if (pNode->next == nullptr) {
@@ -92,16 +95,16 @@ void LinkedList::gotoHead() {
 //		- new Position, when Position did in fact advance
 //		- nullptr, when Position is at list end and cannot advance
 //------------------------------------------------------------------------------
-Node* LinkedList::gotoNext() {
+bool LinkedList::gotoNext() {
 
 	if (Position != nullptr) {
-
+		// advance
 		Position = Position->next;
-		return Position;
+		return true;
 	}
 
-	// there is no next: Position points to 0, we are at end of list
-	return nullptr;
+	// can't advance when Position is 0
+	return false;
 }
 
 //------------------------------------------------------------------------------
@@ -118,9 +121,9 @@ bool LinkedList::getCurrentNodeData(int& fillWithData) {
 }
 
 //------------------------------------------------------------------------------
-// returns Position pointer to node containing passed data value
+// sets Position pointer to node containing passed data value (private)
 //------------------------------------------------------------------------------
-Node* LinkedList::getDataPosition(int matchData) {
+void LinkedList::_setPosition(int matchData) {
 
 	gotoHead();
 
@@ -138,7 +141,6 @@ Node* LinkedList::getDataPosition(int matchData) {
 		// advance Position to next node on the list
 		gotoNext();
 	}
-	return Position;
 }
 
 //------------------------------------------------------------------------------
@@ -158,22 +160,19 @@ void LinkedList::makeEmpty() {
 		return;
 
 	gotoHead();
-	// if there is a non-zero currentItem, list end has not been reached
-	Node* currentItem = nullptr;
 
-	do {
+	while (Position != nullptr) {
 		// save each Position value
 		Node* pNode = Position;
 
 		// then gotoNext() advances Position to next node on the list
-		currentItem = gotoNext();
+		gotoNext();
 
 		// now our Position is the next node, we can
 		// delete previous Position's memory
 		// the memory deleted is every Node instance
 		delete pNode;
-
-	} while (currentItem != nullptr);
+	} 
 
 	head = nullptr;
 	Position = nullptr;
